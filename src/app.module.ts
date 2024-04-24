@@ -1,26 +1,26 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { GlobalConfigModule } from './config/config.module';
 import { ConnectionName } from './config/database.config';
+import { UserModule } from './applications/user/user.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
+    GlobalConfigModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        ...configService.get(`databases.${ConnectionName.Test}`),
-        /**
-         * @fixme Sử dụng migration của typeorm để thay thế
-         */
-        logging: true,
-        logger: 'file',
-      }),
+      useFactory: (configService: ConfigService) => {
+        return {
+          ...configService.get(`database.${ConnectionName.Test}`),
+          logging: true,
+          logger: 'file',
+        };
+      },
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
