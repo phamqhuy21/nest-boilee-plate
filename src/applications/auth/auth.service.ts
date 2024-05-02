@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from '../user/dtos/create-user.dto';
+import { RegisterDto } from '../dtos/register.dto';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +15,7 @@ export class AuthService {
     return null;
   }
 
-  async register(dto: CreateUserDto) {
+  async register(dto: RegisterDto) {
     return this.userService.createUser(dto);
   }
 }

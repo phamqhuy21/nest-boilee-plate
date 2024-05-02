@@ -1,5 +1,6 @@
 import { Expose } from 'class-transformer';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { ROLE } from '../declare.type';
 
 export class CreateUserDto {
   @Expose()
@@ -15,4 +16,8 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   password: string;
+
+  @IsEnum(ROLE)
+  @IsOptional()
+  role!: ROLE;
 }
