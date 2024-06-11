@@ -8,10 +8,12 @@ import { ConnectionName } from './config/database.config';
 import { UserModule } from './applications/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './applications/auth/auth.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
     GlobalConfigModule,
+    RedisModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {

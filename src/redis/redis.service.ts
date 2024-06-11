@@ -1,0 +1,32 @@
+import { Inject, Injectable } from '@nestjs/common';
+import { REDIS_CLIENT } from './redis.constants';
+import { Redis } from 'ioredis';
+
+@Injectable()
+export class RedisService {
+  constructor(@Inject(REDIS_CLIENT) private readonly redisClient: Redis) {}
+
+  async set(key: string, value: string): Promise<void> {
+    await this.redisClient.set(key, value);
+  }
+
+  async get(key: string): Promise<string> {
+    return await this.redisClient.get(key);
+  }
+
+  async addToSortedSet(
+    key: string,
+    score: number,
+    member: string,
+  ): Promise<void> {
+    await this.redisClient.zadd(key, score, member);
+  }
+
+  async getSortedSetRange(
+    key: string,
+    start: number,
+    end: number,
+  ): Promise<string[]> {
+    return await this.redisClient.zrange(key, start, end);
+  }
+}
