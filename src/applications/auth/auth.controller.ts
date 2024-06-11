@@ -1,9 +1,11 @@
-import { Controller, Post, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Post, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { RegisterDto } from '../dtos/register.dto';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller()
+@ApiTags('Auth')
+@Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -28,5 +30,10 @@ export class AuthController {
   @Post('register')
   async register(dto: RegisterDto) {
     return this.authService.register(dto);
+  }
+
+  @Get('me')
+  async getMe() {
+    return this.authService.getMe();
   }
 }
